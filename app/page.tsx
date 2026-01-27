@@ -6,7 +6,7 @@ export default function Home() {
       <Link className="p-10 m-5 bg-gray-600 text-white rounded-lg" href="/week-2"> 
       <button type="button">week-2</button></Link>
       <br />
-      <Link className="p-10 m-5 bg-gray-600 text-white rounded-lg" href="/week-3">
+      <Link href="/week-3">
       <button className="p-10 bg-gray-600 text-white rounded-lg" type="button">week-3</button></Link>
       </main>
   );
