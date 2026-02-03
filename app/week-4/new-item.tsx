@@ -150,7 +150,7 @@ export default function NewItem() {
               disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed 
               disabled:transform-none disabled:shadow-none"
           >
-            Add Item ✨
+            Add Item 
           </button>
         </form>
       </div>
