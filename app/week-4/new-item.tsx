@@ -22,15 +22,22 @@ export default function NewItemPage() {
       <h1 className="text-2xl font-bold mb-4 text-center">Add New Item</h1>
 
       <input
-        type="text"
-        placeholder="Item Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-        className="w-full mb-4 p-3 rounded-lg bg-gray-800 text-white 
-             border border-gray-600 focus:border-blue-400 
-             focus:ring-2 focus:ring-blue-500 outline-none transition"
-      />
+            type="text"
+            placeholder="Item Name"
+            value={name}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Allow only letters and spaces
+              if (/^[A-Za-z\s]*$/.test(value)) {
+                setName(value);
+              }
+            }}
+            required
+            className="w-full mb-4 p-3 rounded-lg bg-gray-800 text-white 
+                      border border-gray-600 focus:border-blue-400 
+                      focus:ring-2 focus:ring-blue-500 outline-none transition"
+          />
+
 
       <input
         type="number"
