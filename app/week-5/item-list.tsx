@@ -38,7 +38,7 @@ export default function ItemList() {
   );
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto bg-white rounded-2xl p-6 shadow-lg">
       {/* Buttons */}
       <div className="flex justify-center gap-4 mb-8">
         <button
