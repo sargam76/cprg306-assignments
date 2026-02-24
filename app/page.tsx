@@ -28,6 +28,12 @@ export default function Home() {
           week-5
         </button>
       </Link>
+
+      <Link href="/week-6">
+        <button className="p-10 m-5 bg-red-400 text-white rounded-lg" type="button">
+          week-6
+        </button>
+      </Link>
     </main>
   );
 }
