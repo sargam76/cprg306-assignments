@@ -29,14 +29,15 @@ export default function MealIdeas({ ingredient }: MealIdeasProps) {
       setError("");
 
       try {
-        const res = await fetch(
+        const response = await fetch(
           `https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(
             ingredient
           )}`
         );
-        if (!res.ok) throw new Error("Fetch failed");
 
-        const data: { meals: Meal[] | null } = await res.json();
+        if (!response.ok) throw new Error("Fetch failed");
+
+        const data: { meals: Meal[] | null } = await response.json();
         setMeals(data.meals ?? []);
       } catch {
         setMeals([]);
