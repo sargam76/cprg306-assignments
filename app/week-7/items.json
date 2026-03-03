@@ -1,9 +1,4 @@
 [
-  { "id": "1", "name": "Milk, 1L", "quantity": 1, "category": "dairy" },
-  { "id": "2", "name": "Bananas", "quantity": 6, "category": "produce" },
-  { "id": "3", "name": "Bread", "quantity": 1, "category": "bakery" },
-  { "id": "4", "name": "Chicken", "quantity": 2, "category": "meat" }
-][
   {
     "id": "1h2GJKH12gkHG31h1H",
     "name": "milk, 4 L 🥛",
