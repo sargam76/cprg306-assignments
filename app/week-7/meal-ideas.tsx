@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 type Meal = {
   idMeal: string;
@@ -8,81 +8,70 @@ type Meal = {
   strMealThumb: string;
 };
 
-type MealIdeasProps = {
-  ingredient: string;
-};
+async function fetchMealIdeas(ingredient: string): Promise<Meal[]> {
+  const response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(
+      ingredient
+    )}`
+  );
 
-export default function MealIdeas({ ingredient }: MealIdeasProps) {
+  const data: { meals: Meal[] | null } = await response.json();
+  return data.meals ?? [];
+}
+
+export default function MealIdeas({ ingredient }: { ingredient: string }) {
   const [meals, setMeals] = useState<Meal[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  async function loadMealIdeas() {
+    if (!ingredient) {
+      setMeals([]);
+      return;
+    }
+
+    // Remove emojis + special characters
+    const cleanedIngredient = ingredient
+      .replace(/[^a-zA-Z\s]/g, "")
+      .trim()
+      .toLowerCase();
+
+    if (!cleanedIngredient) {
+      setMeals([]);
+      return;
+    }
+
+    const results = await fetchMealIdeas(cleanedIngredient);
+    setMeals(results);
+  }
 
   useEffect(() => {
-    const fetchMeals = async () => {
-      if (!ingredient) {
-        setMeals([]);
-        setError("");
-        return;
-      }
-
-      setLoading(true);
-      setError("");
-
-      try {
-        const response = await fetch(
-          `https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(
-            ingredient
-          )}`
-        );
-
-        if (!response.ok) throw new Error("Fetch failed");
-
-        const data: { meals: Meal[] | null } = await response.json();
-        setMeals(data.meals ?? []);
-      } catch {
-        setMeals([]);
-        setError("Failed to load meals.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMeals();
+    loadMealIdeas();
   }, [ingredient]);
 
   return (
     <div>
-      <h2 className="text-xl font-extrabold mb-2">Meal Ideas</h2>
-      <p className="text-sm text-slate-500 mb-6">
-        {ingredient ? (
-          <>
-            Showing meals for <span className="font-bold">{ingredient}</span>
-          </>
-        ) : (
-          "Select an item to see meals."
-        )}
-      </p>
+      <h2 className="text-xl font-bold mb-3">
+        Meal Ideas {ingredient && `for "${ingredient}"`}
+      </h2>
 
-      {loading && <p className="text-slate-600">Loading...</p>}
-      {error && <p className="text-red-600">{error}</p>}
-
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {meals.map((meal) => (
-          <li
-            key={meal.idMeal}
-            className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow"
-          >
-            <img
-              src={meal.strMealThumb}
-              alt={meal.strMeal}
-              className="h-36 w-full object-cover"
-            />
-            <div className="p-4">
-              <p className="font-bold text-slate-800">{meal.strMeal}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {meals.length === 0 ? (
+        <p>No meal ideas found.</p>
+      ) : (
+        <ul className="space-y-3">
+          {meals.map((meal) => (
+            <li
+              key={meal.idMeal}
+              className="w-full bg-slate-700/70 border border-slate-600/50 px-4 py-3 rounded-lg text-slate-100"
+            >
+              <img
+                src={meal.strMealThumb}
+                alt={meal.strMeal}
+                className="w-full h-40 object-cover rounded-md mb-2"
+              />
+              {meal.strMeal}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
